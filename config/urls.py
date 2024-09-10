@@ -44,6 +44,10 @@ urlpatterns = [
 
     # admin
     path('admin/', admin.site.urls),
+
+    # apps
+    path("task/", include("apps.task.urls")),
+    path("account/", include("apps.account.urls")),
 ]
 
 if settings.DEBUG:
