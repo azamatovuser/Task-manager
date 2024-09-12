@@ -4,6 +4,12 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import authenticate
 
 
+class AccountSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ("image", "username")
+
+
 class TopAccountListSerializer(serializers.ModelSerializer):
     tasks_done_today = serializers.IntegerField()
 

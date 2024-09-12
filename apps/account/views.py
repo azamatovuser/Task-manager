@@ -5,7 +5,8 @@ from apps.account.serializers import (TopAccountListSerializer,
                                       AccountDetailSerializer,
                                       FriendSerializer,
                                       RegisterSerializer,
-                                      LoginSerializer)
+                                      LoginSerializer,
+                                      AccountSearchSerializer)
 from django.db.models import Count, Q
 from django.utils.timezone import now
 
@@ -59,12 +60,12 @@ class AccountListAPIView(generics.ListAPIView):
 
 
 class AccountSearchListAPIView(generics.ListAPIView):
-    serializer_class = TopAccountListSerializer
+    serializer_class = AccountSearchSerializer
 
     def get_queryset(self):
         search = self.request.GET.get('search')
         if search:
-            return Account.objects.filter(title__icontains=search)
+            return Account.objects.filter(username__icontains=search)
         return Account.objects.all()
 
 
