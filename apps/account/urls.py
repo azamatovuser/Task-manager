@@ -5,7 +5,8 @@ from apps.account.views import (TopAccountAPIList,
                                 FriendRemoveAPIView,
                                 FriendAddAPIView,
                                 AccountRegisterView,
-                                LoginView)
+                                LoginView,
+                                AccountSearchListAPIView,)
 
 urlpatterns = [
     path("top_accounts/", TopAccountAPIList.as_view()),
@@ -15,4 +16,5 @@ urlpatterns = [
     path("friend_add/", FriendAddAPIView.as_view()),
     path("register/", AccountRegisterView.as_view()),
     path("login/", LoginView.as_view()),
+    path("search/", AccountSearchListAPIView.as_view()),
 ]
