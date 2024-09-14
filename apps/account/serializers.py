@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 class AccountSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ("image", "username")
+        fields = ("id", "image", "username")
 
 
 class TopAccountListSerializer(serializers.ModelSerializer):
