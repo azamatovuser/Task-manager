@@ -1,4 +1,5 @@
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from apps.account.models import Account, Friend
 from apps.account.serializers import (TopAccountListSerializer,
@@ -39,7 +40,7 @@ class AccountAPIDetail(generics.RetrieveAPIView):
     serializer_class = AccountDetailSerializer
 
 
-class AccountListAPIView(generics.ListAPIView):
+class   AccountListAPIView(generics.ListAPIView):
     serializer_class = TopAccountListSerializer
 
     def get_queryset(self):
@@ -57,6 +58,9 @@ class AccountListAPIView(generics.ListAPIView):
                 filter=Q(task__is_done=True) & Q(task__created_date__date=today)
             )
         )
+
+    def get_serializer_context(self):
+        return {'request': self.request}
 
 
 class AccountSearchListAPIView(generics.ListAPIView):
@@ -77,6 +81,7 @@ class FriendRemoveAPIView(generics.DestroyAPIView):
 class FriendAddAPIView(generics.CreateAPIView):
     queryset = Friend.objects.all()
     serializer_class = FriendSerializer
+    permission_classes = (IsAuthenticated, )
 
 
 # REGISTRATION AND LOGIN

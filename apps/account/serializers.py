@@ -2,6 +2,7 @@ from rest_framework import serializers
 from apps.account.models import Account, Friend
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import authenticate
+from django.db.models import Count, Q
 
 
 class AccountSearchSerializer(serializers.ModelSerializer):
@@ -12,10 +13,22 @@ class AccountSearchSerializer(serializers.ModelSerializer):
 
 class TopAccountListSerializer(serializers.ModelSerializer):
     tasks_done_today = serializers.IntegerField()
+    friend_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Account
-        fields = ('image', "username", "tasks_done_today")
+        fields = ('friend_id', 'image', "username", "tasks_done_today")  # Include friendship_id in fields
+
+    def get_friend_id(self, obj):
+        user = self.context['request'].user
+
+        # Fetch the friendship relation from the Friend model
+        friend_relation = Friend.objects.filter(
+            Q(user=user, friend=obj) | Q(friend=user, user=obj)
+        ).first()
+
+        # Return the id of the Friend relation object
+        return friend_relation.id if friend_relation else None
 
 
 class AccountDetailSerializer(serializers.ModelSerializer):
