@@ -17,17 +17,17 @@ class TopAccountListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ('friend_id', 'image', "username", "tasks_done_today")  # Include friendship_id in fields
+        fields = ('friend_id', 'image', "username", "tasks_done_today")
 
     def get_friend_id(self, obj):
         user = self.context['request'].user
 
-        # Fetch the friendship relation from the Friend model
+
         friend_relation = Friend.objects.filter(
             Q(user=user, friend=obj) | Q(friend=user, user=obj)
         ).first()
 
-        # Return the id of the Friend relation object
+
         return friend_relation.id if friend_relation else None
 
 
